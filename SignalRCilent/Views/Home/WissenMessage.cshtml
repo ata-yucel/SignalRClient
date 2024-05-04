@@ -32,7 +32,7 @@
                 $(".connectionstate").html('<div class="alert alert-danger" role="alert">Durum : ' + connectionState + '</div>')
 
             });
-            connection.on("RecieveName", { name } => {
+            connection.on("RecieveName", ( name ) => {
                 $("ul").append('<li>' + name + '</li>');
             });
         });

@@ -1,0 +1,52 @@
+﻿<div class="connectionstate"></div>
+
+<button class="connect" value="Bağlan">Bağlan</button>
+<div class="input-group">
+    <div class="input-group-prepend">
+        <span class="input-group-text">With textarea</span>
+    </div>
+    <textarea class="form-control textarea" aria-label="Mesajınızı yazın"></textarea>
+</div>
+
+<button type="button" class="btn btn-secondary btnmesaj">Mesaj Gönder</button>
+
+<ul>
+
+</ul>
+<script>
+
+    $(document).ready(function () {
+
+        var connection;
+        $(".connect").click(function () {
+
+            connection = new signalR.HubConnectionBuilder().withUrl("http://localhost:5284/wissen").build();
+            connection.start().then(() => {
+
+          
+
+                var connectionState = connection.state;
+                $(".connectionstate").html('<div class="alert alert-success" role="alert">Durum : ' + connectionState + '</div>')
+            }).catch(() => {
+                var connectionState = connection.state;
+                $(".connectionstate").html('<div class="alert alert-danger" role="alert">Durum : ' + connectionState + '</div>')
+
+            });
+            connection.on("RecieveName", { name } => {
+                $("ul").append('<li>' + name + '</li>');
+            });
+        });
+ 
+        $(".btnmesaj").click(function () {
+            var message = $(".textarea").val();
+
+            connection.invoke("SendName",message);
+
+            $(".textarea").val('');
+        });
+
+
+
+
+    });
+</script>
